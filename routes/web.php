@@ -46,8 +46,8 @@ Route::group(['prefix' => 'preference', 'middleware' => ['auth']], function () {
     Route::post('/company/store/ajax', [CompanyController::class, 'storeAjax'])->name('company.store.ajax')->middleware('check.role:admin,student');
 
     // EVALUATION QUESTION
-    // EVALUATION QUESTION : ADMIN 
-    Route::resource('evaluation_question','App\Http\Controllers\EvaluationQuestionController')->middleware('check.role:admin');
+    // EVALUATION QUESTION : ADMIN
+    Route::resource('evaluation_question', 'App\Http\Controllers\EvaluationQuestionController')->middleware('check.role:admin');
 
     // </> NOT EFFECTED ROUTE_____________________________
 
@@ -67,50 +67,26 @@ Route::group(['prefix' => 'preference', 'middleware' => ['auth']], function () {
     Route::get('internship/{internship}/advisor_selection', [AdvisorSelectionController::class, 'index'])->middleware('check.role:student,admin')->name('student_advisor_selection.index');
     Route::post('internship/{internship}/advisor_selection/request', [AdvisorSelectionController::class, 'sendRequest'])->middleware('check.role:student,admin')->name('student_advisor_selection.request');
     // ADVISOR: AVISOR SELECTION
-    Route::group(['middleware' => ['check.role:advisor,admin']], function(){
+    Route::group(['middleware' => ['check.role:advisor,admin']], function () {
         Route::get('internship/{internship}/advisor_selection/pending', [AdvisorSelectionController::class, 'viewPendingRequests'])->name('advisor_advisor_selection.pending');
         Route::post('internship/{internship}/advisor_selection/respond', [AdvisorSelectionController::class, 'respondToRequest'])->name('advisor_advisor_selection.respond');
     });
     // ADMIN: ADVISOR SELECTION
-    Route::group(['prefix' => 'internship/{internship}', 'middleware' => ['check.role:admin']], function(){
-
+    Route::group(['prefix' => 'internship/{internship}', 'middleware' => ['check.role:admin']], function () {
         Route::get('/advisor_selection/admin/index', [AdminAdvisorSelectionController::class, 'index'])->name('admin_advisor_selection.index');
-
         Route::get('/advisor_selection/admin/create', [AdminAdvisorSelectionController::class, 'create'])->name('admin_advisor_selection.create');
-
         Route::post('/advisor_selection/admin/store', [AdminAdvisorSelectionController::class, 'store'])->name('admin_advisor_selection.store');
-
         Route::get('/advisor_selection/admin/edit/{id}', [AdminAdvisorSelectionController::class, 'edit'])->name('admin_advisor_selection.edit');
-
         Route::put('/advisor_selection/admin/update/{id}', [AdminAdvisorSelectionController::class, 'update'])->name('admin_advisor_selection.update');
-
         Route::delete('advisor_selection/admin/delete/{id}', [AdminAdvisorSelectionController::class, 'destroy'])->name('admin_advisor_selection.destroy');
     });
 
-
-
-
-
-
-    
-    Route::group(['prefix' => 'internship/{internship}', 'middleware' => ['check.role:admin,student,advisor']], function(){
-        // Student : Internship Project
+    Route::group(['prefix' => 'internship/{internship}', 'middleware' => ['check.role:admin,student,advisor']], function () {
         Route::resource('student_internship_project', StudentInternshipProjectController::class);
-
-        // Admin : Internship Project
         Route::resource('advisor_internship_project', AdvisorInternshipProjectController::class);
-
-        // Admin : Internship Project
         Route::resource('admin_internship_project', InternshipProjectController::class);
     });
 
-
-    
-
-
-
-
-    
     // ADMIN: Submission_form: CRUD
     Route::resource('submission_form', 'App\Http\Controllers\SubmissionFormController')->middleware('check.role:admin,student');
     // STUDENT: Submission_form
@@ -122,7 +98,7 @@ Route::group(['prefix' => 'preference', 'middleware' => ['auth']], function () {
         Route::put('/{submissionForm}', [StudentSubmissionFormController::class, 'studentUpdate'])->name('student_submission_form.update');
         Route::delete('/{submissionForm}', [StudentSubmissionFormController::class, 'studentDestroy'])->name('student_submission_form.destroy');
     });
-    
+
     // ADMIN: FOLLOW UP: CRUD
     Route::resource('follow_up', 'App\Http\Controllers\FollowUpController')->middleware('check.role:admin');
     // ADVISOR: FOLLOW UP: CRUD
@@ -146,49 +122,49 @@ Route::group(['prefix' => 'preference', 'middleware' => ['auth']], function () {
     Route::resource('student_thesis_document', 'App\Http\Controllers\StudentThesisDocumentController')->middleware('check.role:student,admin');
 
     // DEFENSE REUQUEST
-    // DEFENSE REQUEST : ADMIN 
-    Route::resource('admin_defense_request','App\Http\Controllers\DefenseRequestController')->middleware('check.role:admin');
-    // DEFENSE REQUEST : ADVISOR 
-    Route::resource('advisor_defense_request','App\Http\Controllers\AdvisorDefenseRequestController')->middleware('check.role:advisor,admin');
-    // DEFENSE REQUEST : STUDENT 
-    Route::resource('student_defense_request','App\Http\Controllers\StudentDefenseRequestController')->middleware('check.role:student,admin');
+    // DEFENSE REQUEST : ADMIN
+    Route::resource('admin_defense_request', 'App\Http\Controllers\DefenseRequestController')->middleware('check.role:admin');
+    // DEFENSE REQUEST : ADVISOR
+    Route::resource('advisor_defense_request', 'App\Http\Controllers\AdvisorDefenseRequestController')->middleware('check.role:advisor,admin');
+    // DEFENSE REQUEST : STUDENT
+    Route::resource('student_defense_request', 'App\Http\Controllers\StudentDefenseRequestController')->middleware('check.role:student,admin');
 
     // JURY GROUP
-    // JURY GROUP : ADMIN 
-    Route::resource('jury_group','App\Http\Controllers\JuryGroupController')->middleware('check.role:admin');
+    // JURY GROUP : ADMIN
+    Route::resource('jury_group', 'App\Http\Controllers\JuryGroupController')->middleware('check.role:admin');
 
     // DEFENSE_ENROLLMENT
-    // DEFENSE_ENROLLMENT : ADMIN 
-    Route::resource('defense_enrollment','App\Http\Controllers\DefenseEnrollmentController')->middleware('check.role:admin');
+    // DEFENSE_ENROLLMENT : ADMIN
+    Route::resource('defense_enrollment', 'App\Http\Controllers\DefenseEnrollmentController')->middleware('check.role:admin');
     Route::get('/get-jury-group/{id}', [JuryGroupController::class, 'getJuryGroup'])->middleware('check.role:admin');
-    // DEFENSE_ENROLLMENT : JURY 
-    Route::resource('jury_defense_enrollment','App\Http\Controllers\JuryDefenseEnrollmentController')->middleware('check.role:jury,admin');
-    // DEFENSE_ENROLLMENT : STUDENT 
-    Route::resource('student_defense_enrollment','App\Http\Controllers\StudentDefenseEnrollmentController')->middleware('check.role:student,admin');
+    // DEFENSE_ENROLLMENT : JURY
+    Route::resource('jury_defense_enrollment', 'App\Http\Controllers\JuryDefenseEnrollmentController')->middleware('check.role:jury,admin');
+    // DEFENSE_ENROLLMENT : STUDENT
+    Route::resource('student_defense_enrollment', 'App\Http\Controllers\StudentDefenseEnrollmentController')->middleware('check.role:student,admin');
 
 
 
     // EVALUATION
-    // EVALUATION : ADMIN 
-    Route::resource('evaluation','App\Http\Controllers\EvaluationController')->middleware('check.role:admin');
-    // EVALUATION : JURY 
-    Route::resource('jury_evaluation','App\Http\Controllers\JuryEvaluationController')->middleware('check.role:jury,admin');
+    // EVALUATION : ADMIN
+    Route::resource('evaluation', 'App\Http\Controllers\EvaluationController')->middleware('check.role:admin');
+    // EVALUATION : JURY
+    Route::resource('jury_evaluation', 'App\Http\Controllers\JuryEvaluationController')->middleware('check.role:jury,admin');
     // EVALUATION : JURY - Create with Param
     Route::get('jury_evaluation/create/{defenseEnrollment}', [JuryEvaluationController::class, 'create'])->middleware('check.role:jury,admin')->name('jury_evaluation.create_with_param');
     // EVALUATION : JURY - DELTE ALL
     Route::delete('/jury_evaluation/{enrollment_id}/delete_all', [JuryEvaluationController::class, 'deleteAllEvaluations'])
-    ->middleware('check.role:jury,admin')->name('jury_evaluation.delete_all');
+        ->middleware('check.role:jury,admin')->name('jury_evaluation.delete_all');
     // EVALUATION : JURY - Mark as Completed
     Route::put('preference/jury_evaluation/{enrollment_id}/complete', [JuryEvaluationController::class, 'markAsCompleted'])->middleware('check.role:jury,admin')->name('jury_evaluation.complete');
 
-    // EVALUATOIN : ADMIN : GET 2 PARAM 
+    // EVALUATOIN : ADMIN : GET 2 PARAM
     Route::get('evaluation/{defense_enrollment_id}/jury/{jury_id}', [EvaluationController::class, 'filterByJury'])
-    ->middleware('check.role:admin')->name('evaluation.filter_by_jury');
+        ->middleware('check.role:admin')->name('evaluation.filter_by_jury');
     // EVALUATION : ADMIN - Create with Param
     Route::get('evaluation/create/{defense_enrollment_id}/jury/{jury_id}', [EvaluationController::class, 'create'])->middleware('check.role:admin')->name('evaluation.create_with_param');
     // EVALUATION : ADMIN - DELETE ALL by enrollment_id and jury_id
     Route::delete('/evaluation/{defense_enrollment_id}/jury/{jury_id}/delete_all', [EvaluationController::class, 'deleteAllEvaluations'])
-    ->middleware('check.role:admin')->name('evaluation.delete_all');
+        ->middleware('check.role:admin')->name('evaluation.delete_all');
 
     // DEFENSE RESULTS
     // DEFENSE RESULTS : ADMIN

@@ -57,7 +57,7 @@ class InternshipController extends Controller
 
 
         // dd($internship);
-        
+
 
         if($internship->save()){
             return redirect()->route('internship.index')->with('success', "internship created successfully!");
@@ -69,7 +69,7 @@ class InternshipController extends Controller
     {
         $internship = Internship::with('participants')->findOrFail($id);
         $participants = $internship->participants; // Retrieve all participants for this internship
-        
+
         return view('back_end.preference.internship.show', compact('internship', 'participants'));
     }
 
@@ -77,7 +77,7 @@ class InternshipController extends Controller
     // {
     //     $internship = Internship::with('participants')->findOrFail($id);
     //     $participants = $internship->participants; // Retrieve all participants for this internship
-        
+
     //     return view('back_end.preference.internship.show', compact('internship', 'participants'));
     // }
 
@@ -120,7 +120,7 @@ class InternshipController extends Controller
         // ]);
 
         $requestData = [];
-        
+
         foreach ($request->all() as $key => $value) {
             if (! empty($value)) {
                 $requestData[$key] = $value;
@@ -128,7 +128,7 @@ class InternshipController extends Controller
         }
 
         // dd($internship);
-        
+
 
         if($internship->update($requestData)){
             return redirect()->route('internship.index')->with('success', "internship updated successfully!");

@@ -91,8 +91,8 @@
                                     </a>
                                 </li>
 
-                                <li class="{{ (request()->is('*/internship_project')) ? 'active' : '' }}">
-                                    <a href="{{route('internship_project.index')}}">
+                                <li class="{{ (request()->is('*/internship')) ? 'active' : '' }}">
+                                    <a href="{{ route('internship.index') }}">
                                         <span class=" sub-item">MANAGE INTERNSHIP PROJECTS</span>
                                     </a>
                                 </li>
@@ -157,7 +157,7 @@
                                         <span class="sub-item">ADVISOR: DEFENSE REQUEST</span>
                                     </a>
                                 </li>
-                                
+
                                 <li class="{{ (request()->is('*admin_defense_request*')) ? 'active' : '' }}">
                                     <a href="{{ route('admin_defense_request.index') }}">
                                         <span class="sub-item">ADMIN MANAGE: DEFENSE REQUEST</span>
@@ -322,7 +322,7 @@
                                         <span class="sub-item">ADVISOR: DEFENSE REQUEST</span>
                                     </a>
                                 </li>
-                                
+
 
                                 <li class="{{ (request()->is('*/defense_results/advisor*')) ? 'active' : '' }}">
                                     <a href="{{ route('defense_results.advisor') }}">

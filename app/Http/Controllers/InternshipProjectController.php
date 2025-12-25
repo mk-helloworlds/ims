@@ -26,16 +26,16 @@ class InternshipProjectController extends Controller
             ->where('status', 'accepted')
             ->get();
 
-        $students = User::whereHas('role', function($q){
+        $students = User::whereHas('role', function ($q) {
             $q->where('role_name', 'student');
         })->get();
-    
-        $advisors = User::whereHas('role', function($q){
+
+        $advisors = User::whereHas('role', function ($q) {
             $q->where('role_name', 'advisor');
         })->get();
 
         $internships = Internship::get();
-    
+
         return view('back_end.preference.internship_project.create', compact('students', 'advisors', 'internships', 'acceptedStudentRequests'));
     }
 
@@ -43,20 +43,20 @@ class InternshipProjectController extends Controller
     {
         // Validate the request
         $validatedData = $request->validate([
-            'student_request_id' => 'required|exists:student_requests,id',  
+            'student_request_id' => 'required|exists:student_requests,id',
             'project_name' => 'required|string|max:255',
             'description' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date', 
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
-    
+
         // Check if the student request already exists in the InternshipProject table
         $existingProject = InternshipProject::where('student_request_id', $validatedData['student_request_id'])->first();
-    
+
         if ($existingProject) {
             return redirect()->back()->with('error', 'An internship project for this student request already exists.');
         }
-    
+
         // Create a new internship project
         $internshipProject = InternshipProject::create([
             'student_request_id' => $validatedData['student_request_id'],
@@ -65,7 +65,7 @@ class InternshipProjectController extends Controller
             'start_date' => $validatedData['start_date'],
             'end_date' => $validatedData['end_date'],
         ]);
-    
+
         if ($internshipProject) {
             return redirect()->route('internship_project.index')->with('success', 'Internship Project created successfully.');
         } else {
@@ -83,7 +83,7 @@ class InternshipProjectController extends Controller
     public function edit(InternshipProject $internshipProject)
     {
         $studentRequest = $internshipProject->studentRequest;
-        
+
         $acceptedStudentRequests = StudentRequest::with(['student', 'advisor', 'internship'])
             ->where('status', 'accepted')
             ->get();
@@ -95,22 +95,22 @@ class InternshipProjectController extends Controller
     {
         // Validate the request
         $validatedData = $request->validate([
-            'student_request_id' => 'required|exists:student_requests,id',  
+            'student_request_id' => 'required|exists:student_requests,id',
             'project_name' => 'required|string|max:255',
             'description' => 'required|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date', 
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
-    
+
         // Check if another project with the same student_request_id exists
         $existingProject = InternshipProject::where('student_request_id', $validatedData['student_request_id'])
-                                            ->where('id', '!=', $internshipProject->id) // Exclude the current project
-                                            ->first();
-    
+            ->where('id', '!=', $internshipProject->id) // Exclude the current project
+            ->first();
+
         if ($existingProject) {
             return redirect()->back()->with('error', 'An internship project for this student request already exists.');
         }
-    
+
         // Try to update the internship project
         try {
             $internshipProject->update([
@@ -120,7 +120,7 @@ class InternshipProjectController extends Controller
                 'start_date' => $validatedData['start_date'],
                 'end_date' => $validatedData['end_date'],
             ]);
-    
+
             return redirect()->route('internship_project.index')->with('success', 'Internship Project updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
@@ -130,8 +130,8 @@ class InternshipProjectController extends Controller
     }
 
     public function destroy(InternshipProject $internshipProject)
-        {
-            $internshipProject->delete();
-            return redirect()->route('internship_project.index')->with('success','Internship Project Deleted successfully');
-        }
+    {
+        $internshipProject->delete();
+        return redirect()->route('internship_project.index')->with('success', 'Internship Project Deleted successfully');
+    }
 }
